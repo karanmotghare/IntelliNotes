@@ -17,11 +17,14 @@ import com.example.intellinotes.ui.theme.Montserrat
 import com.example.intellinotes.R
 
 @Composable
-fun FolderListItem(folder: Folder) {
+fun FolderListItem(
+    folder: Folder,
+    onClick: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { /* Handle navigation to the folder */ }
+            .clickable { onClick() }//folderlistitem dont need to know about navigation so callback
             .padding(vertical = 12.dp, horizontal = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween // To push the count/arrow to the end

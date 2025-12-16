@@ -25,11 +25,22 @@ fun AppHostNav(navController: NavHostController) {
         ) {
 
             composable(Screen.Home.route) {
-                HomeScreen(navController)
+                HomeScreen(
+                    onOpenNotes = { folderId ->
+                        navController.navigate(Screen.Notes.passFolderId(folderId))
+                    }
+                )
             }
 
-            composable(Screen.Notes.route) {
-                NotesScreen(navController)
+            composable(Screen.Notes.route) { backStackEntry ->
+                val folderId = backStackEntry.arguments?.getString("folderId") ?: return@composable
+
+                NotesScreen(
+                    folderId = folderId,
+                    onNoteClick = { noteId ->
+                        navController.navigate(Screen.NotesDetails.passNoteId(noteId))
+                    }
+                )
             }
 
             composable(Screen.NotesDetails.route) { navBackStackEntry ->
