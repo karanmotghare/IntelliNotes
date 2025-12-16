@@ -1,0 +1,79 @@
+package com.example.intellinotes.room
+
+import androidx.room.*
+import kotlinx.coroutines.flow.Flow
+
+@Dao
+interface NotesDao {
+    /* -------------------- CREATE / UPDATE -------------------- */
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertNote(note: NoteEntity)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun upsertNotes(notes: List<NoteEntity>)
+
+    /* -------------------- READ -------------------- */
+
+    // All active (non-deleted) notes
+    @Query("""
+        SELECT * FROM notes
+        WHERE isDeleted = 0
+        ORDER BY isPinned DESC, updatedAt DESC
+    """)
+    fun getAllNotes(): Flow<List<NoteEntity>>
+
+    // Notes by folder
+    @Query("""
+        SELECT * FROM notes
+        WHERE folderId = :folderId AND isDeleted = 0
+        ORDER BY isPinned DESC, updatedAt DESC
+    """)
+    fun getNotesByFolder(folderId: String): Flow<List<NoteEntity>>
+
+    // Single note (details/editor screen)
+    @Query("""
+        SELECT * FROM notes
+        WHERE id = :noteId
+        LIMIT 1
+    """)
+    fun getNoteById(noteId: String): Flow<NoteEntity?>
+
+    /* -------------------- DATE GROUPING (Apple Notes style) -------------------- */
+
+    @Query("""
+        SELECT * FROM notes
+        WHERE isDeleted = 0
+          AND updatedAt >= :startTime
+        ORDER BY updatedAt DESC
+    """)
+    fun getNotesUpdatedAfter(startTime: Long): Flow<List<NoteEntity>>
+
+    /* -------------------- PIN / DELETE -------------------- */
+
+    @Query("UPDATE notes SET isPinned = :pinned WHERE id = :noteId")
+    suspend fun setPinned(noteId: String, pinned: Boolean)
+
+    // Soft delete
+    @Query("""
+        UPDATE notes
+        SET isDeleted = 1, updatedAt = :deletedAt
+        WHERE id = :noteId
+    """)
+    suspend fun softDelete(noteId: String, deletedAt: Long)
+
+    /* -------------------- RECENTLY DELETED -------------------- */
+
+    @Query("""
+        SELECT * FROM notes
+        WHERE isDeleted = 1
+        ORDER BY updatedAt DESC
+    """)
+    fun getDeletedNotes(): Flow<List<NoteEntity>>
+
+    /* -------------------- CLEANUP (future) -------------------- */
+
+    // Hard delete after grace period (WorkManager later)
+    @Query("DELETE FROM notes WHERE isDeleted = 1 AND updatedAt < :expiryTime")
+    suspend fun permanentlyDeleteExpiredNotes(expiryTime: Long)
+}
