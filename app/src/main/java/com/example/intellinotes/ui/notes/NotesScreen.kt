@@ -34,7 +34,7 @@ fun NotesScreen(
     onNoteClick: (String) -> Unit,
     viewModel: NotesViewModel
 ) {
-    val notes by viewModel.notes.collectAsState()
+    val notes by viewModel.uiState.collectAsState()
 
     Column(
         modifier = Modifier

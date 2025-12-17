@@ -4,8 +4,10 @@ import com.example.intellinotes.core.utils.startOfDay
 import com.example.intellinotes.ui.notes.NoteUiModel
 import com.example.intellinotes.ui.notes.NotesSection
 import java.util.concurrent.TimeUnit
+import javax.inject.Inject
 
-class GroupNotesByDateUseCase {
+class GroupNotesByDateUseCase @Inject constructor(){
+
     operator fun invoke(notes: List<NoteUiModel>): List<NotesSection> {
         if (notes.isEmpty()) return emptyList()
         val todayStart = startOfDay(System.currentTimeMillis())

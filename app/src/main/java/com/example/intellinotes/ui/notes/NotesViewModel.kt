@@ -16,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class NotesViewModel @Inject constructor(
     private val repository: NoteRepository,
+    private val groupNotesByDate: GroupNotesByDateUseCase,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -29,7 +30,7 @@ class NotesViewModel @Inject constructor(
                     NotesUiState.Empty
                 }else{
                     val uiModels = notes.map { it.toUiModel() }
-                    val sections = GroupNotesByDateUseCase()(uiModels)
+                    val sections = groupNotesByDate(uiModels)
 
                     NotesUiState.Success(sections)
                 }
