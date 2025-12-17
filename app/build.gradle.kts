@@ -2,6 +2,10 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+
+    // 👇 REQUIRED for Hilt
+    alias(libs.plugins.hilt)
+    kotlin("kapt")
 }
 
 android {
@@ -39,6 +43,10 @@ android {
     }
 }
 
+kapt {
+    correctErrorTypes = true
+}
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -58,4 +66,10 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+    // Hilt core
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.compiler)
+
+    // Hilt + Compose ViewModel
+    implementation(libs.androidx.hilt.navigation.compose)
 }

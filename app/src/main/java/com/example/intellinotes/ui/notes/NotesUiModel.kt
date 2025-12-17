@@ -4,7 +4,7 @@ data class NoteUiModel (
     val id: String,
     val title: String,
     val preview: String,
-    val lastEditedText: String,
+    val updatedAt: Long,
     val isPinned: Boolean
 )
 
