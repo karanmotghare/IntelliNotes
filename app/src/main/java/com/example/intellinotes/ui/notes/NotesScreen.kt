@@ -15,6 +15,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
@@ -24,12 +25,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.intellinotes.R
 import com.example.intellinotes.ui.theme.Montserrat
+import androidx.compose.runtime.getValue
+
 
 @Composable
 fun NotesScreen(
     folderId: String,
-    onNoteClick: (String) -> Unit
+    onNoteClick: (String) -> Unit,
+    viewModel: NotesViewModel
 ) {
+    val notes by viewModel.notes.collectAsState()
+
     Column(
         modifier = Modifier
             .padding(top = 16.dp, start = 8.dp, end = 8.dp)

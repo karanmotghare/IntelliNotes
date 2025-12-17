@@ -1,4 +1,4 @@
-package com.example.intellinotes.room
+package com.example.intellinotes.data.room
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
