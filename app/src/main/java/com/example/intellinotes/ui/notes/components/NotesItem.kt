@@ -15,7 +15,7 @@ import androidx.compose.ui.unit.sp
 import com.example.intellinotes.ui.notes.NoteUiModel
 
 @Composable
-fun NoteItem(
+fun NotesItem(
     note: NoteUiModel,
     onClick: () -> Unit
 ) {

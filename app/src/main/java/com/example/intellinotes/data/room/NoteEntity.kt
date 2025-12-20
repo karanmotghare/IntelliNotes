@@ -18,14 +18,14 @@ data class NoteEntity(
     val id: String,
 
     val title: String?,
-    val content: String,
+    val content: String?,
 
     val noteType: NoteType, // TEXT, IMAGE, MIXED, CHECKLIST
 
     val folderId: String, // NOTES, RECENTLY_DELETED, CUSTOM_FOLDER_ID
 
     val createdAt: Long,
-    val updatedAt: Long,
+    val updatedAt: Long?,
 
     val isPinned: Boolean = false,
     val isDeleted: Boolean = false,

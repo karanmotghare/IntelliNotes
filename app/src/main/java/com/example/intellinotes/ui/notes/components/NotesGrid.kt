@@ -27,7 +27,7 @@ fun NotesGrid(
         userScrollEnabled = false // IMPORTANT, since it is already getting inflated in lazycolumn, and nested scrolling would caouse jank JANK
     ) {
         items(notes) { note ->
-            NoteItem(
+            NotesItem(
                 note = note,
                 onClick = { onNoteClick(note.id) }
             )
