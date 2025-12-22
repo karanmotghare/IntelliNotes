@@ -8,8 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.example.intellinotes.ui.details.NoteDetailsScreen
 import com.example.intellinotes.ui.home.HomeScreen
+import com.example.intellinotes.ui.note.NoteScreen
 import com.example.intellinotes.ui.notes.NotesScreen
 
 @Composable
@@ -32,20 +32,25 @@ fun AppHostNav(navController: NavHostController) {
                 )
             }
 
-            composable(Screen.Notes.route) { backStackEntry ->
-                val folderId = backStackEntry.arguments?.getString("folderId") ?: return@composable
-
+            composable(Screen.Notes.route) {
                 NotesScreen(
-                    folderId = folderId,
+                    onBackClick = {
+                        navController.popBackStack()
+                    },
                     onNoteClick = { noteId ->
-                        navController.navigate(Screen.NotesDetails.passNoteId(noteId))
+                        navController.navigate(
+                            Screen.NotesDetails.passNoteId(noteId)
+                        )
                     }
                 )
             }
 
-            composable(Screen.NotesDetails.route) { navBackStackEntry ->
-                val noteId = navBackStackEntry.arguments?.getString("noteId") ?: return@composable
-                NoteDetailsScreen(navController, noteId)
+            composable(Screen.NotesDetails.route) {
+                NoteScreen(
+                    onBack = {
+                        navController.popBackStack()
+                    }
+                )
             }
 
         }
