@@ -7,8 +7,8 @@ fun NoteEntity.toUiModel(): NoteUiModel {
     return NoteUiModel(
         id = id,
         title = title ?: "Untitled",
-        preview = content.take(100),
-        updatedAt = updatedAt,
+        preview = content?.take(100) ?: "",
+        updatedAt = updatedAt ?: createdAt,
         isPinned = isPinned
     )
 }
