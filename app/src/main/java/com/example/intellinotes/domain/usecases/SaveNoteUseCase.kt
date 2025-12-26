@@ -1,4 +1,4 @@
-package com.example.intellinotes.domain
+package com.example.intellinotes.domain.usecases
 
 import com.example.intellinotes.data.repository.repo.NoteRepository
 import com.example.intellinotes.data.room.NoteEntity

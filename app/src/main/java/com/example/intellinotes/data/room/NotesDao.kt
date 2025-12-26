@@ -1,6 +1,7 @@
 package com.example.intellinotes.data.room
 
 import androidx.room.*
+import com.example.intellinotes.domain.model.FolderCount
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -38,6 +39,15 @@ interface NotesDao {
         LIMIT 1
     """)
     fun getNoteById(noteId: String): Flow<NoteEntity?>
+
+    @Query("""
+    SELECT folderId, COUNT(*) as count
+    FROM notes
+    WHERE isDeleted = 0 
+    GROUP BY folderId
+""")
+    fun getFolderCounts(): Flow<List<FolderCount>>
+
 
     /* -------------------- DATE GROUPING (Apple Notes style) -------------------- */
 

@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.intellinotes.data.repository.repo.NoteRepository
 import com.example.intellinotes.ui.notes.mapper.toUiModel
-import com.example.intellinotes.domain.GroupNotesByDateUseCase
+import com.example.intellinotes.domain.usecases.GroupNotesByDateUseCase
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map

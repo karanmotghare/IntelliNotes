@@ -3,7 +3,7 @@ package com.example.intellinotes.ui.note
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.intellinotes.domain.GetNoteUseCase
+import com.example.intellinotes.domain.usecases.GetNoteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

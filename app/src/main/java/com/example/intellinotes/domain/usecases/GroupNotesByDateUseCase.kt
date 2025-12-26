@@ -1,4 +1,4 @@
-package com.example.intellinotes.domain
+package com.example.intellinotes.domain.usecases
 
 import com.example.intellinotes.core.utils.startOfDay
 import com.example.intellinotes.ui.notes.NoteUiModel

@@ -4,8 +4,12 @@ import com.example.intellinotes.data.repository.repo.NoteRepository
 import com.example.intellinotes.data.room.NoteEntity
 import com.example.intellinotes.data.room.NotesDao
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
-class NoteRepositoryImpl(private val noteDao: NotesDao) : NoteRepository {
+class NoteRepositoryImpl @Inject constructor(
+    private val noteDao: NotesDao
+) : NoteRepository {
+
     override fun getNotesByFolder(folderId: String): Flow<List<NoteEntity>> {
         return noteDao.getNotesByFolder(folderId)
     }
