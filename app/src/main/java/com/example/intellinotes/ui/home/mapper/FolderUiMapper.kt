@@ -10,11 +10,9 @@ fun Folder.toUiModel(): FolderUiModel {
         id = id,
         title = title,
         count = noteCount,
-        iconRes = when (type) {
-            FolderType.SYSTEM ->
-                if (id == "RECENTLY_DELETED") R.drawable.yellow_bin
-                else R.drawable.yellow_folder
-            FolderType.USER -> R.drawable.yellow_folder
+        iconRes = when (id) {
+            "RECENTLY_DELETED" -> R.drawable.yellow_bin
+            else -> R.drawable.yellow_folder
         }
     )
 }

@@ -1,7 +1,7 @@
 package com.example.intellinotes.domain.usecases
 
 import com.example.intellinotes.data.repository.repo.NoteRepository
-import com.example.intellinotes.data.room.NoteEntity
+import com.example.intellinotes.data.room.entity.NoteEntity
 import javax.inject.Inject
 
 class SaveNoteUseCase @Inject constructor(

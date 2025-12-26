@@ -1,6 +1,6 @@
 package com.example.intellinotes.data.repository.repo
 
-import com.example.intellinotes.data.room.NoteEntity
+import com.example.intellinotes.data.room.entity.NoteEntity
 import kotlinx.coroutines.flow.Flow
 
 interface NoteRepository {

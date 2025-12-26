@@ -1,6 +1,7 @@
 package com.example.intellinotes.data.room
 
 import androidx.room.TypeConverter
+import com.example.intellinotes.data.room.entity.NoteType
 
 class NoteTypeConverter {
 

@@ -1,6 +1,6 @@
 package com.example.intellinotes.ui.notes.mapper
 
-import com.example.intellinotes.data.room.NoteEntity
+import com.example.intellinotes.data.room.entity.NoteEntity
 import com.example.intellinotes.ui.notes.NoteUiModel
 
 fun NoteEntity.toUiModel(): NoteUiModel {

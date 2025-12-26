@@ -1,8 +1,8 @@
 package com.example.intellinotes.data.repository.repoimpl
 
 import com.example.intellinotes.data.repository.repo.NoteRepository
-import com.example.intellinotes.data.room.NoteEntity
-import com.example.intellinotes.data.room.NotesDao
+import com.example.intellinotes.data.room.entity.NoteEntity
+import com.example.intellinotes.data.room.dao.NotesDao
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

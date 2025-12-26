@@ -1,6 +1,7 @@
-package com.example.intellinotes.data.room
+package com.example.intellinotes.data.room.dao
 
 import androidx.room.*
+import com.example.intellinotes.data.room.entity.NoteEntity
 import com.example.intellinotes.domain.model.FolderCount
 import kotlinx.coroutines.flow.Flow
 

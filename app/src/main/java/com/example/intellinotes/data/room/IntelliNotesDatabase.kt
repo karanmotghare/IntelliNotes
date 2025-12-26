@@ -3,12 +3,17 @@ package com.example.intellinotes.data.room
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.intellinotes.data.room.dao.FolderDao
+import com.example.intellinotes.data.room.dao.NotesDao
+import com.example.intellinotes.data.room.entity.FolderEntity
+import com.example.intellinotes.data.room.entity.NoteEntity
 
 @Database(
     entities = [
-        NoteEntity::class
+        NoteEntity::class,
+        FolderEntity::class
     ],
-    version = 1,
+    version = 2,
     exportSchema = true
 )
 @TypeConverters(
@@ -16,4 +21,5 @@ import androidx.room.TypeConverters
 )
 abstract class IntelliNotesDatabase: RoomDatabase() {
     abstract fun notesDao(): NotesDao
+    abstract fun folderDao(): FolderDao
 }

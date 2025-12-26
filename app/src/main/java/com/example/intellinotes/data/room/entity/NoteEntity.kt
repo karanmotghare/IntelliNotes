@@ -1,4 +1,4 @@
-package com.example.intellinotes.data.room
+package com.example.intellinotes.data.room.entity
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
