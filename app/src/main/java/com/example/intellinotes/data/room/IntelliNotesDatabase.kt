@@ -14,7 +14,7 @@ import com.example.intellinotes.data.room.entity.NoteEntity
         FolderEntity::class
     ],
     version = 2,
-    exportSchema = true
+    exportSchema = false
 )
 @TypeConverters(
     NoteTypeConverter::class
