@@ -15,7 +15,8 @@ import com.example.intellinotes.ui.theme.Montserrat
 fun TopBar() {
     Row (
         modifier = Modifier.fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
+
     ){
         Text(
             text = "Folders",

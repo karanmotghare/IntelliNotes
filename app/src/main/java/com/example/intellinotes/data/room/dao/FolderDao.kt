@@ -27,4 +27,8 @@ interface FolderDao {
 
     @Query("DELETE FROM folders WHERE id = :folderId")
     suspend fun delete(folderId: String)
+
+    @Query("SELECT COUNT(*) FROM folders")
+    suspend fun folderCount(): Int
+
 }

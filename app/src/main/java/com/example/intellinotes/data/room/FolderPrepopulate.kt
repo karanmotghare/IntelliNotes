@@ -8,6 +8,8 @@ class FolderPrepopulate @Inject constructor(
     private val dao: FolderDao
 ){
     suspend fun seedIfNeeded() {
+        if(dao.folderCount() > 0) return // no need to repopulate once done!
+
         val now = System.currentTimeMillis()
 
         dao.insertFolder(

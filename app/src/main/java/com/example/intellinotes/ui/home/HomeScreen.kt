@@ -27,7 +27,7 @@ fun HomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .statusBarsPadding()
-            .padding(horizontal = 16.dp)
+            .padding(horizontal = 12.dp)
     ) {
 
         TopBar()
