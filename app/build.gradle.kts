@@ -5,7 +5,8 @@ plugins {
 
     // 👇 REQUIRED for Hilt
     alias(libs.plugins.hilt)
-    kotlin("kapt")
+
+    alias(libs.plugins.ksp)
 }
 
 android {
@@ -43,9 +44,6 @@ android {
     }
 }
 
-kapt {
-    correctErrorTypes = true
-}
 
 dependencies {
     implementation(libs.androidx.core.ktx)
@@ -58,7 +56,9 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.room.runtime.android)
+    implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -68,8 +68,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.test.manifest)
     // Hilt core
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-
+    ksp(libs.hilt.compiler)
+    ksp(libs.androidx.room.compiler)
     // Hilt + Compose ViewModel
     implementation(libs.androidx.hilt.navigation.compose)
 }
