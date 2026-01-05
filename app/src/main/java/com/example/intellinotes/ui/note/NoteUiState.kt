@@ -1,11 +1,17 @@
 package com.example.intellinotes.ui.note
 
-data class NoteUiState(
-    val noteId: String,
-    val title: String = "",
-    val content: String = "",
-    val updatedAt: Long = 0L,
-    val mode: NoteMode = NoteMode.READ,
-    val isLoading: Boolean = false,
-    val error: String? = null
-)
+
+sealed interface NoteUiState {
+
+    data object Loading : NoteUiState
+
+    data object Empty : NoteUiState
+
+    data class Success(
+        val note: NoteUiModel
+    ) : NoteUiState
+
+    data class Error(
+        val message: String
+    ) : NoteUiState
+}

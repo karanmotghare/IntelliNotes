@@ -4,11 +4,15 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.intellinotes.domain.usecases.GetNoteUseCase
+import com.example.intellinotes.ui.note.mapper.toDomain
+import com.example.intellinotes.ui.note.mapper.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,27 +24,45 @@ class NoteViewModel @Inject constructor(
     private val noteId: String =
         checkNotNull(savedStateHandle["noteId"])
 
-    val uiState: StateFlow<NoteUiState> =
-        getNote(noteId)
-            .map { note ->
-                NoteUiState(
-                    noteId = note?.id.orEmpty(),
-                    title = note?.title.orEmpty(),
-                    content = note?.content.orEmpty(),
-                    updatedAt = note?.updatedAt ?: 0L,
-                    mode = NoteMode.READ,
-                    isLoading = false,
-                    error = null
-                )
-            }
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = NoteUiState(
-                    noteId = noteId,
-                    isLoading = true
+    private val _uiState = MutableStateFlow<NoteUiState>(NoteUiState.Loading)
+    val uiState: StateFlow<NoteUiState> = _uiState.asStateFlow()
+
+    init {
+        loadNote()
+    }
+
+    private fun loadNote() {
+        // FAB → new note
+        if (noteId == null) {
+            _uiState.value = NoteUiState.Success(
+                NoteUiModel(
+                    noteId = "",
+                    title = "",
+                    content = "",
+                    updatedAt = System.currentTimeMillis(),
+                    mode = NoteMode.WRITE
                 )
             )
+            return
+        }
+        viewModelScope.launch {
+            getNote(noteId)
+                .catch {
+                    _uiState.value = NoteUiState.Error("Failed to load note")
+                }
+                .collectLatest { note ->
+                    if (note == null) {
+                        _uiState.value = NoteUiState.Empty
+                    } else {
+                        val uiModel = note
+                            .toDomain()
+                            .toUiModel()
+                        _uiState.value = NoteUiState.Success(uiModel)
+                    }
+                }
+        }
+    }
+
 
     fun enableEdit() {
         updateMode(NoteMode.WRITE)
