@@ -1,9 +1,11 @@
 package com.example.intellinotes.ui.notes
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.intellinotes.MainViewModel
 import com.example.intellinotes.ui.notes.components.NotesContent
 import com.example.intellinotes.ui.notes.components.NotesEmpty
 import com.example.intellinotes.ui.notes.components.NotesError
@@ -12,10 +14,15 @@ import com.example.intellinotes.ui.notes.components.NotesLoading
 
 @Composable
 fun NotesScreen(
+    folderId: String,
     onBackClick: () -> Unit,
     onNoteClick: (String) -> Unit,
-    viewModel: NotesViewModel = hiltViewModel()
+    viewModel: NotesViewModel = hiltViewModel(),
+    mainViewModel: MainViewModel = hiltViewModel()
 ) {
+    LaunchedEffect(folderId) {
+        mainViewModel.setCurrentFolder(folderId)
+    }
     val uiState by viewModel.uiState.collectAsState()
 
     when (uiState) {

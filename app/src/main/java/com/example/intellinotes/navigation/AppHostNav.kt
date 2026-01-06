@@ -13,10 +13,13 @@ import com.example.intellinotes.ui.note.NoteScreen
 import com.example.intellinotes.ui.notes.NotesScreen
 
 @Composable
-fun AppHostNav(navController: NavHostController) {
+fun AppHostNav(
+    navController: NavHostController,
+    modifier: Modifier = Modifier
+) {
 
     Surface(
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
         NavHost(
@@ -32,8 +35,12 @@ fun AppHostNav(navController: NavHostController) {
                 )
             }
 
-            composable(Screen.Notes.route) {
+            composable(Screen.Notes.route) { backStackEntry ->
+                val folderId =
+                    backStackEntry.arguments?.getString("folderId") ?: "NOTES"
+
                 NotesScreen(
+                    folderId = folderId,
                     onBackClick = {
                         navController.popBackStack()
                     },
