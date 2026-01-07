@@ -1,6 +1,11 @@
 package com.example.intellinotes.ui.notes
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Text
@@ -8,7 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.*
-import com.example.intellinotes.ui.notes.components.NotesGrid
+import com.example.intellinotes.ui.notes.components.NotesItem
+import androidx.compose.foundation.lazy.items
 
 @Composable
 fun NotesList(
@@ -23,11 +29,25 @@ fun NotesList(
                 SectionHeader(title = section.title)
             }
 
-            item {
-                NotesGrid(
-                    notes = section.notes,
-                    onNoteClick = onNoteClick
-                )
+            items(section.notes.chunked(3)) { rowNotes ->
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    rowNotes.forEach { note ->
+                        Box(modifier = Modifier.weight(1f)) {
+                            NotesItem(
+                                note = note,
+                                onClick = { onNoteClick(note.id) }
+                            )
+                        }
+                    }
+
+                    // Fill empty cells if row < 3
+                    repeat(3 - rowNotes.size) {
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+                }
             }
         }
     }

@@ -44,18 +44,21 @@ fun NoteScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        when {
-            state.isLoading -> {
+        when(val uiState = state) {
+            is NoteUiState.Loading -> {
                 Text(text = "Loading...")
             }
 
-            state.error != null -> {
-                Text(text = state.error ?: "Something went wrong")
+            is NoteUiState.Empty -> {
             }
 
-            else -> {
+            is NoteUiState.Error -> {
+                Text(text = uiState.message ?: "Something went wrong")
+            }
+
+            is NoteUiState.Success -> {
                 NoteContent(
-                    state = state,
+                    note = uiState.note,
                     onEditEnabled = { viewModel.enableEdit() }
                 )
             }

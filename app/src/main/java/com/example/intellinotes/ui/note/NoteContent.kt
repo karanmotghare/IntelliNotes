@@ -19,22 +19,22 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun NoteContent(
-    state: NoteUiState,
+    note: NoteUiModel,
     onEditEnabled: () -> Unit
 ) {
-    var title by remember(state.title) { mutableStateOf(state.title) }
-    var content by remember(state.content) { mutableStateOf(state.content) }
+    var title by remember(note.title) { mutableStateOf(note.title) }
+    var content by remember(note.content) { mutableStateOf(note.content) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
             .clickable(
-                enabled = state.mode == NoteMode.READ
+                enabled = note.mode == NoteMode.READ
             ) {
                 onEditEnabled()
             }
     ) {
-        if (state.mode == NoteMode.READ) {
+        if (note.mode == NoteMode.READ) {
 
             Text(
                 text = title.ifBlank { "Untitled" },

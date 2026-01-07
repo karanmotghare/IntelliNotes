@@ -21,8 +21,8 @@ class NoteViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
-    private val noteId: String =
-        checkNotNull(savedStateHandle["noteId"])
+    private val noteId: String? =
+        savedStateHandle["noteId"]
 
     private val _uiState = MutableStateFlow<NoteUiState>(NoteUiState.Loading)
     val uiState: StateFlow<NoteUiState> = _uiState.asStateFlow()
