@@ -74,6 +74,33 @@ class NoteViewModel @Inject constructor(
 
     private fun updateMode(mode: NoteMode) {
         // this will be converted to MutableStateFlow later when we add editing
+        val current = _uiState.value
+
+        if (current is NoteUiState.Success) {
+            _uiState.value = current.copy(
+                note = current.note.copy(
+                    mode = mode
+                )
+            )
+        }
+    }
+
+    fun onTitleChange(title: String) {
+        val current = _uiState.value
+        if (current is NoteUiState.Success) {
+            _uiState.value = current.copy(
+                note = current.note.copy(title = title)
+            )
+        }
+    }
+
+    fun onContentChange(content: String){
+        val current = _uiState.value
+        if(current is NoteUiState.Success){
+            _uiState.value = current.copy(
+                note = current.note.copy(content = content)
+            )
+        }
     }
 
 }

@@ -20,11 +20,10 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun NoteContent(
     note: NoteUiModel,
-    onEditEnabled: () -> Unit
+    onEditEnabled: () -> Unit,
+    onTitleChange: (String) -> Unit,
+    onContentChange: (String) -> Unit
 ) {
-    var title by remember(note.title) { mutableStateOf(note.title) }
-    var content by remember(note.content) { mutableStateOf(note.content) }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -37,21 +36,21 @@ fun NoteContent(
         if (note.mode == NoteMode.READ) {
 
             Text(
-                text = title.ifBlank { "Untitled" },
+                text = note.title.ifBlank { "Untitled" },
                 fontSize = 24.sp
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = content.ifBlank { "Start writing..." },
+                text = note.content.ifBlank { "Start writing..." },
                 fontSize = 16.sp
             )
 
         } else{
             BasicTextField(
-                value = title,
-                onValueChange = { title = it },
+                value = note.title,
+                onValueChange = onTitleChange,
                 textStyle = androidx.compose.ui.text.TextStyle(fontSize = 24.sp),
                 modifier = Modifier.fillMaxWidth()
             )
@@ -59,8 +58,8 @@ fun NoteContent(
             Spacer(modifier = Modifier.height(8.dp))
 
             BasicTextField(
-                value = content,
-                onValueChange = { content = it },
+                value = note.content,
+                onValueChange = onContentChange,
                 textStyle = androidx.compose.ui.text.TextStyle(fontSize = 16.sp),
                 modifier = Modifier.fillMaxSize()
             )

@@ -59,7 +59,9 @@ fun NoteScreen(
             is NoteUiState.Success -> {
                 NoteContent(
                     note = uiState.note,
-                    onEditEnabled = { viewModel.enableEdit() }
+                    onEditEnabled = { viewModel.enableEdit() },
+                    onTitleChange =  viewModel::onTitleChange,
+                    onContentChange = viewModel::onContentChange
                 )
             }
         }
