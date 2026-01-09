@@ -3,7 +3,9 @@ package com.example.intellinotes.ui.note
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.intellinotes.domain.model.NoteModel
 import com.example.intellinotes.domain.usecases.GetNoteUseCase
+import com.example.intellinotes.domain.usecases.SaveNoteUseCase
 import com.example.intellinotes.ui.note.mapper.toDomain
 import com.example.intellinotes.ui.note.mapper.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,19 +20,25 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteViewModel @Inject constructor(
     private val getNote: GetNoteUseCase,
+    private val saveNote: SaveNoteUseCase,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     private val noteId: String? =
         savedStateHandle["noteId"]
+    private val folderId: String =
+        savedStateHandle["folderId"] ?: "NOTES"
 
     private val _uiState = MutableStateFlow<NoteUiState>(NoteUiState.Loading)
     val uiState: StateFlow<NoteUiState> = _uiState.asStateFlow()
+
+
 
     init {
         loadNote()
     }
 
+    /* ---------------- LOAD ---------------- */
     private fun loadNote() {
         // FAB → new note
         if (noteId == null) {
@@ -63,6 +71,7 @@ class NoteViewModel @Inject constructor(
         }
     }
 
+    /* ---------------- EDITING ---------------- */
 
     fun enableEdit() {
         updateMode(NoteMode.WRITE)
@@ -101,6 +110,34 @@ class NoteViewModel @Inject constructor(
                 note = current.note.copy(content = content)
             )
         }
+    }
+
+    /* ---------------- SAVING ---------------- */
+
+    fun saveNoteIfNeeded(){
+        val state = _uiState.value
+        if(state !is NoteUiState.Success) return
+
+        val note = state.note
+        if (note.title.isBlank() && note.content.isBlank()) return
+
+        viewModelScope.launch {
+            saveNote(
+                note = NoteModel(
+                    noteId = note.noteId,
+                    title = note.title,
+                    content = note.content,
+                    updatedAt = System.currentTimeMillis()
+                ),
+                folderId = folderId
+            )
+        }
+    }
+
+    //LIFE-CYCLE trigger
+    override fun onCleared() {
+        saveNoteIfNeeded()
+        super.onCleared()
     }
 
 }
