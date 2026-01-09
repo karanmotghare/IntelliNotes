@@ -19,7 +19,13 @@ class NoteRepositoryImpl @Inject constructor(
     }
 
     override suspend fun upsertNote(note: NoteEntity) {
-        noteDao.upsertNote(note)
+        noteDao.upsertNote(
+            note.copy(
+                isSynced = false,
+                version = note.version + 1,
+                updatedAt = System.currentTimeMillis()
+            )
+        )
     }
 
     override suspend fun softDeleteNote(noteId: String) {

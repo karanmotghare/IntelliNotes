@@ -32,6 +32,7 @@ class NoteViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<NoteUiState>(NoteUiState.Loading)
     val uiState: StateFlow<NoteUiState> = _uiState.asStateFlow()
 
+    private var originalNote: NoteUiModel? = null
 
 
     init {
@@ -42,15 +43,16 @@ class NoteViewModel @Inject constructor(
     private fun loadNote() {
         // FAB → new note
         if (noteId == null) {
-            _uiState.value = NoteUiState.Success(
-                NoteUiModel(
-                    noteId = "",
-                    title = "",
-                    content = "",
-                    updatedAt = System.currentTimeMillis(),
-                    mode = NoteMode.WRITE
-                )
+            val newNote = NoteUiModel(
+                noteId = "",
+                title = "",
+                content = "",
+                updatedAt = System.currentTimeMillis(),
+                mode = NoteMode.WRITE
             )
+
+            originalNote = newNote
+            _uiState.value = NoteUiState.Success(newNote)
             return
         }
         viewModelScope.launch {
@@ -65,6 +67,7 @@ class NoteViewModel @Inject constructor(
                         val uiModel = note
                             .toDomain()
                             .toUiModel()
+                        originalNote = uiModel
                         _uiState.value = NoteUiState.Success(uiModel)
                     }
                 }
@@ -119,7 +122,10 @@ class NoteViewModel @Inject constructor(
         if(state !is NoteUiState.Success) return
 
         val note = state.note
-        if (note.title.isBlank() && note.content.isBlank()) return
+
+        if(isEmpty(note)) return
+
+        if (!isDirty(note)) return
 
         viewModelScope.launch {
             saveNote(
@@ -131,6 +137,7 @@ class NoteViewModel @Inject constructor(
                 ),
                 folderId = folderId
             )
+            originalNote = note.copy()
         }
     }
 
@@ -138,6 +145,17 @@ class NoteViewModel @Inject constructor(
     override fun onCleared() {
         saveNoteIfNeeded()
         super.onCleared()
+    }
+
+    private fun isDirty(current: NoteUiModel): Boolean {
+        val original = originalNote ?: return true
+
+        return original.title != current.title ||
+                original.content != current.content
+    }
+
+    private fun isEmpty(note: NoteUiModel): Boolean {
+        return note.title.isBlank() && note.content.isBlank()
     }
 
 }

@@ -49,6 +49,10 @@ interface NotesDao {
 """)
     fun getFolderCounts(): Flow<List<FolderCount>>
 
+    /* -------------------- UnSynced Notes -------------------- */
+    @Query("SELECT * FROM notes WHERE isSynced = 0")
+    suspend fun getUnsyncedNotes(): List<NoteEntity>
+
 
     /* -------------------- DATE GROUPING (Apple Notes style) -------------------- */
 
