@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.intellinotes.domain.model.NoteModel
+import com.example.intellinotes.domain.usecases.DeleteNoteUseCase
 import com.example.intellinotes.domain.usecases.GetNoteUseCase
 import com.example.intellinotes.domain.usecases.SaveNoteUseCase
 import com.example.intellinotes.ui.note.mapper.toDomain
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class NoteViewModel @Inject constructor(
     private val getNote: GetNoteUseCase,
     private val saveNote: SaveNoteUseCase,
+    private val deleteNote: DeleteNoteUseCase,
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
@@ -123,7 +125,10 @@ class NoteViewModel @Inject constructor(
 
         val note = state.note
 
-        if(isEmpty(note)) return
+        if(isEmpty(note)) {
+            handleEmpty(note)
+            return
+        }
 
         if (!isDirty(note)) return
 
@@ -156,6 +161,16 @@ class NoteViewModel @Inject constructor(
 
     private fun isEmpty(note: NoteUiModel): Boolean {
         return note.title.isBlank() && note.content.isBlank()
+    }
+
+    private fun handleEmpty(note: NoteUiModel) {
+        // Case 1: New note (never saved) → do nothing
+        if (note.noteId.isBlank()) return
+
+        // Case 2: Existing note cleared by user → soft delete
+        viewModelScope.launch {
+            deleteNote(note.noteId)
+        }
     }
 
 }

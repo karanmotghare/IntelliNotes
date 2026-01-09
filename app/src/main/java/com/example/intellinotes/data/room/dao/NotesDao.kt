@@ -72,7 +72,7 @@ interface NotesDao {
     // Soft delete
     @Query("""
         UPDATE notes
-        SET isDeleted = 1, updatedAt = :deletedAt
+        SET isDeleted = 1, updatedAt = :deletedAt, isSynced = 0, version = version + 1
         WHERE id = :noteId
     """)
     suspend fun softDelete(noteId: String, deletedAt: Long)
