@@ -39,4 +39,8 @@ class NoteRepositoryImpl @Inject constructor(
     override suspend fun softDeleteNote(noteId: String) {
         noteDao.softDelete(noteId, System.currentTimeMillis())
     }
+
+    override suspend fun permanentlyDeleteExpiredNotes(days: Long) {
+        noteDao.permanentlyDeleteExpiredNotes(days)
+    }
 }

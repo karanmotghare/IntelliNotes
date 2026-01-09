@@ -15,4 +15,6 @@ interface NoteRepository {
     suspend fun restoreNote(noteId: String)
 
     suspend fun softDeleteNote(noteId: String)
+
+    suspend fun permanentlyDeleteExpiredNotes(days: Long)
 }
