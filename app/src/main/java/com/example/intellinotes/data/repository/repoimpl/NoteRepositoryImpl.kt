@@ -18,6 +18,10 @@ class NoteRepositoryImpl @Inject constructor(
         return noteDao.getNoteById(noteId)
     }
 
+    override fun getDeletedNotes(): Flow<List<NoteEntity>> {
+        return noteDao.getDeletedNotes()
+    }
+
     override suspend fun upsertNote(note: NoteEntity) {
         noteDao.upsertNote(
             note.copy(
@@ -26,6 +30,10 @@ class NoteRepositoryImpl @Inject constructor(
                 updatedAt = System.currentTimeMillis()
             )
         )
+    }
+
+    override suspend fun restoreNote(noteId: String) {
+        noteDao.restoreNote(noteId, System.currentTimeMillis())
     }
 
     override suspend fun softDeleteNote(noteId: String) {

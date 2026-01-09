@@ -86,6 +86,14 @@ interface NotesDao {
     """)
     fun getDeletedNotes(): Flow<List<NoteEntity>>
 
+    @Query("""
+    UPDATE notes
+    SET isDeleted = 0,
+        updatedAt = :restoredAt
+    WHERE id = :noteId
+""")
+    suspend fun restoreNote(noteId: String, restoredAt: Long)
+
     /* -------------------- CLEANUP (future) -------------------- */
 
     // Hard delete after grace period (WorkManager later)

@@ -8,7 +8,11 @@ interface NoteRepository {
 
     fun getNoteById(noteId: String): Flow<NoteEntity?>
 
+    fun getDeletedNotes(): Flow<List<NoteEntity>>
+
     suspend fun upsertNote(note: NoteEntity)
+
+    suspend fun restoreNote(noteId: String)
 
     suspend fun softDeleteNote(noteId: String)
 }
