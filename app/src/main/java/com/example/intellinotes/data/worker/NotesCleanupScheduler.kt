@@ -28,7 +28,7 @@ object NotesCleanupScheduler {
             )
     }
 
-    //For testing
+    //For Immediate testing
     fun runNow(context: Context) {
         val request = OneTimeWorkRequestBuilder<NotesCleanupWorker>().build()
         WorkManager.getInstance(context).enqueue(request)

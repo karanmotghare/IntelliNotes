@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "414187612690",
+    "project_id": "intellinotes-f1c29",
+    "storage_bucket": "intellinotes-f1c29.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414187612690:android:17323db089eee3fb7346cb",
+        "android_client_info": {
+          "package_name": "com.example.intellinotes"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqUZWmB380ayy7AOIsOmTlb47LowiGn40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
