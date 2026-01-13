@@ -43,4 +43,12 @@ class NoteRepositoryImpl @Inject constructor(
     override suspend fun permanentlyDeleteExpiredNotes(days: Long) {
         noteDao.permanentlyDeleteExpiredNotes(days)
     }
+
+    override suspend fun getUnsyncedNotes(): List<NoteEntity> {
+        return noteDao.getUnsyncedNotes()
+    }
+
+    override suspend fun markAsSynced(noteId: String) {
+        noteDao.markAsSynced(noteId)
+    }
 }

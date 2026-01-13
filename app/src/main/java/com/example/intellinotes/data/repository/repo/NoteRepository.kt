@@ -17,4 +17,8 @@ interface NoteRepository {
     suspend fun softDeleteNote(noteId: String)
 
     suspend fun permanentlyDeleteExpiredNotes(days: Long)
+
+    suspend fun getUnsyncedNotes(): List<NoteEntity>
+
+    suspend fun markAsSynced(noteId: String)
 }

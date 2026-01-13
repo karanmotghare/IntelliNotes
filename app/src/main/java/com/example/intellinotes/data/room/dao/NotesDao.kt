@@ -53,6 +53,9 @@ interface NotesDao {
     @Query("SELECT * FROM notes WHERE isSynced = 0")
     suspend fun getUnsyncedNotes(): List<NoteEntity>
 
+    @Query("UPDATE notes SET isSynced = 1, lastSyncedAt = :time WHERE id = :noteId")
+    suspend fun markAsSynced(noteId: String, time: Long = System.currentTimeMillis())
+
 
     /* -------------------- DATE GROUPING (Apple Notes style) -------------------- */
 
