@@ -48,7 +48,7 @@ class NoteRepositoryImpl @Inject constructor(
         return noteDao.getUnsyncedNotes()
     }
 
-    override suspend fun markAsSynced(noteId: String) {
-        noteDao.markAsSynced(noteId)
+    override suspend fun markAsSynced(noteId: String, syncedAt: Long) {
+        noteDao.markAsSynced(noteId, syncedAt)
     }
 }

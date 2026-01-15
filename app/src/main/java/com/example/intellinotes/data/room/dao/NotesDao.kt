@@ -50,11 +50,11 @@ interface NotesDao {
     fun getFolderCounts(): Flow<List<FolderCount>>
 
     /* -------------------- UnSynced Notes -------------------- */
-    @Query("SELECT * FROM notes WHERE isSynced = 0")
+    @Query("SELECT * FROM notes WHERE isSynced = 0 AND isDeleted = 0")
     suspend fun getUnsyncedNotes(): List<NoteEntity>
 
-    @Query("UPDATE notes SET isSynced = 1, lastSyncedAt = :time WHERE id = :noteId")
-    suspend fun markAsSynced(noteId: String, time: Long = System.currentTimeMillis())
+    @Query("UPDATE notes SET isSynced = 1, lastSyncedAt = :syncedAt WHERE id = :noteId")
+    suspend fun markAsSynced(noteId: String, syncedAt: Long)
 
 
     /* -------------------- DATE GROUPING (Apple Notes style) -------------------- */

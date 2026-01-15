@@ -20,5 +20,5 @@ interface NoteRepository {
 
     suspend fun getUnsyncedNotes(): List<NoteEntity>
 
-    suspend fun markAsSynced(noteId: String)
+    suspend fun markAsSynced(noteId: String, syncedAt: Long)
 }
