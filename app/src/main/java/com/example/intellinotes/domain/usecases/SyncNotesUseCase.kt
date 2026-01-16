@@ -1,6 +1,5 @@
 package com.example.intellinotes.domain.usecases
 
-import com.example.intellinotes.data.remote.firestore.FirestoreNotesDataSource
 import com.example.intellinotes.data.remote.mapper.toCloud
 import com.example.intellinotes.data.remote.mapper.toEntity
 import com.example.intellinotes.data.repository.repo.NoteRepository
@@ -10,8 +9,7 @@ import javax.inject.Inject
 
 class SyncNotesUseCase @Inject constructor(
     private val repository: NoteRepository,
-    private val notesRemoteRepository: NotesRemoteRepository,
-    private val remote: FirestoreNotesDataSource
+    private val notesRemoteRepository: NotesRemoteRepository
 ) {
 
     suspend operator fun invoke() {
@@ -23,7 +21,7 @@ class SyncNotesUseCase @Inject constructor(
         val unsyncedNotes = repository.getUnsyncedNotes()
 
         unsyncedNotes.forEach { note ->
-            remote.upsert(note.toCloud())
+            notesRemoteRepository.uploadNote(note.toCloud())
             repository.markAsSynced(note.id, System.currentTimeMillis())
         }
     }
