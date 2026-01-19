@@ -87,7 +87,6 @@ class NoteViewModel @Inject constructor(
     }
 
     private fun updateMode(mode: NoteMode) {
-        // this will be converted to MutableStateFlow later when we add editing
         val current = _uiState.value
 
         if (current is NoteUiState.Success) {

@@ -43,6 +43,8 @@ fun NotesList(
                         }
                     }
 
+                    //since we are getting at max 3 notes at a time in rowNotes so,
+                    //if it has less than 3 notes then we must add empty cells
                     // Fill empty cells if row < 3
                     repeat(3 - rowNotes.size) {
                         Spacer(modifier = Modifier.weight(1f))
