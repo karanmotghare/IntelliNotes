@@ -4,9 +4,11 @@ import com.example.intellinotes.data.remote.model.CloudNote
 import com.example.intellinotes.data.repository.repo.NotesRemoteRepository
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import javax.inject.Singleton
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
+@Singleton
 class NotesRemoteRepositoryImpl @Inject constructor(
     private val firestore: FirebaseFirestore,
     private val auth: FirebaseAuth
