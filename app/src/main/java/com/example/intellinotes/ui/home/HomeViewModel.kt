@@ -2,14 +2,12 @@ package com.example.intellinotes.ui.home
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.intellinotes.R
 import com.example.intellinotes.data.room.FolderPrepopulate
 import com.example.intellinotes.domain.usecases.GetFolderUseCase
 import com.example.intellinotes.ui.home.mapper.toUiModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch

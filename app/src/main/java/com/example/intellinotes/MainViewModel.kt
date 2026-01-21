@@ -3,6 +3,7 @@ package com.example.intellinotes
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.intellinotes.domain.usecases.CreateNoteUseCase
+import com.example.intellinotes.domain.usecases.SyncNotesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val createNoteUseCase: CreateNoteUseCase
+    private val createNoteUseCase: CreateNoteUseCase,
+    private val syncNotesUseCase: SyncNotesUseCase
 ) : ViewModel(){
     /* -------------------- CURRENT CONTEXT -------------------- */
 
@@ -38,6 +40,17 @@ class MainViewModel @Inject constructor(
                 folderId = _currentFolderId.value
             )
             _navigateToNote.emit(noteId)
+        }
+    }
+
+    /* -------------------- SYNC ACTION -------------------- */
+    fun syncNow(){
+        try {
+            viewModelScope.launch {
+                syncNotesUseCase()
+            }
+        }catch (e: Exception){
+            e.printStackTrace()
         }
     }
 }
