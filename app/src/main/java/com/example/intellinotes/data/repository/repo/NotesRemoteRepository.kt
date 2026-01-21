@@ -10,4 +10,6 @@ interface NotesRemoteRepository {
 
     suspend fun fetchAllNotes(): List<CloudNote>
 
+    suspend fun deleteNote(note: CloudNote)
+
 }

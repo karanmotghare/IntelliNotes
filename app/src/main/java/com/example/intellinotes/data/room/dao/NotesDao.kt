@@ -87,7 +87,7 @@ interface NotesDao {
         WHERE isDeleted = 1
         ORDER BY updatedAt DESC
     """)
-    fun getDeletedNotes(): Flow<List<NoteEntity>>
+    suspend fun getDeletedNotes(): List<NoteEntity>
 
     @Query("""
     UPDATE notes

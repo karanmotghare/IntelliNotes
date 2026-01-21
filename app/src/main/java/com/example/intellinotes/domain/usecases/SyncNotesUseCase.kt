@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class SyncNotesUseCase @Inject constructor(
     private val repository: NoteRepository,
-    private val notesRemoteRepository: NotesRemoteRepository
+    private val notesRemoteRepository: NotesRemoteRepository,
 ) {
 
     suspend operator fun invoke() {
@@ -19,10 +19,29 @@ class SyncNotesUseCase @Inject constructor(
 
     private suspend fun pushLocalChanges() {
         val unsyncedNotes = repository.getUnsyncedNotes()
+        val deletedNotes = repository.getDeletedNotes()
 
         unsyncedNotes.forEach { note ->
-            notesRemoteRepository.uploadNote(note.toCloud())
-            repository.markAsSynced(note.id, System.currentTimeMillis())
+            try {
+                notesRemoteRepository.uploadNote(note.toCloud())
+                repository.markAsSynced(note.id, note.updatedAt ?: System.currentTimeMillis())
+            }catch (e: Exception){
+                e.printStackTrace()
+            }
+        }
+
+//        “We never hard-delete during sync.
+//        Deletions are versioned state changes.
+//        Physical cleanup is handled asynchronously via background jobs to ensure consistency across offline devices.”
+        deletedNotes
+            .filter { it.isSynced }
+            .forEach { note ->
+                try {
+                    notesRemoteRepository.deleteNote(note.toCloud())
+                    repository.markAsSynced(note.id, note.updatedAt ?: System.currentTimeMillis())
+                }catch (e: Exception){
+                    e.printStackTrace()
+                }
         }
     }
 
@@ -41,7 +60,11 @@ class SyncNotesUseCase @Inject constructor(
 
                 cloudNote.version > localNote.version -> {
                     // Cloud is newer → overwrite local
-                    repository.upsertNote(cloudNote.toEntity())
+                    if(cloudNote.isDeleted){
+                        repository.softDeleteNote(cloudNote.id, cloudNote.updatedAt ?: System.currentTimeMillis())
+                    }else {
+                        repository.upsertNote(cloudNote.toEntity())
+                    }
                 }
 
                 cloudNote.version < localNote.version -> {

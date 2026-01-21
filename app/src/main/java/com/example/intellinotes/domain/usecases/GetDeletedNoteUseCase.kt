@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetDeletedNoteUseCase @Inject constructor(
     private val noteRepository: NoteRepository
 ) {
-    operator fun invoke() = noteRepository.getDeletedNotes()
+    suspend operator fun invoke() = noteRepository.getDeletedNotes()
 }

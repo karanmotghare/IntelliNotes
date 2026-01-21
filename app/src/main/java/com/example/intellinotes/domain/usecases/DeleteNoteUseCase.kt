@@ -7,6 +7,6 @@ class DeleteNoteUseCase @Inject constructor(
     private val repository: NoteRepository
 ) {
     suspend operator fun invoke(noteId: String) {
-        repository.softDeleteNote(noteId)
+        repository.softDeleteNote(noteId, System.currentTimeMillis())
     }
 }

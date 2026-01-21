@@ -18,7 +18,7 @@ class NoteRepositoryImpl @Inject constructor(
         return noteDao.getNoteById(noteId)
     }
 
-    override fun getDeletedNotes(): Flow<List<NoteEntity>> {
+    override suspend fun getDeletedNotes(): List<NoteEntity> {
         return noteDao.getDeletedNotes()
     }
 
@@ -36,8 +36,8 @@ class NoteRepositoryImpl @Inject constructor(
         noteDao.restoreNote(noteId, System.currentTimeMillis())
     }
 
-    override suspend fun softDeleteNote(noteId: String) {
-        noteDao.softDelete(noteId, System.currentTimeMillis())
+    override suspend fun softDeleteNote(noteId: String, deletedAt: Long) {
+        noteDao.softDelete(noteId, deletedAt)
     }
 
     override suspend fun permanentlyDeleteExpiredNotes(days: Long) {
