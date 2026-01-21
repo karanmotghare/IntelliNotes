@@ -34,7 +34,7 @@ class SyncNotesUseCase @Inject constructor(
 //        Deletions are versioned state changes.
 //        Physical cleanup is handled asynchronously via background jobs to ensure consistency across offline devices.”
         deletedNotes
-            .filter { it.isSynced }
+            .filter { !it.isSynced }
             .forEach { note ->
                 try {
                     notesRemoteRepository.deleteNote(note.toCloud())
