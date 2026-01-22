@@ -48,7 +48,7 @@ class SyncNotesUseCase @Inject constructor(
     private suspend fun pullRemoteChanges() {
         val cloudNotes = notesRemoteRepository.fetchAllNotes()
 
-        cloudNotes.forEach { cloudNote ->
+        for (cloudNote in cloudNotes) {
             val localNote = repository.getNoteById(cloudNote.id).firstOrNull()
 
             when {
@@ -57,8 +57,7 @@ class SyncNotesUseCase @Inject constructor(
                     repository.upsertNote(cloudNote.toEntity())
                 }
 
-
-                cloudNote.version > localNote.version -> {
+                cloudNote.version > localNote.version && !localNote.isDeleted -> {
                     // Cloud is newer → overwrite local
                     if(cloudNote.isDeleted){
                         repository.softDeleteNote(cloudNote.id, cloudNote.updatedAt ?: System.currentTimeMillis())
