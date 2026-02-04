@@ -7,6 +7,7 @@ import com.example.intellinotes.data.room.entity.NoteEntity
 import com.example.intellinotes.data.room.entity.NoteType
 import com.example.intellinotes.domain.usecases.SyncNotesUseCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
@@ -76,7 +77,36 @@ class SyncNotesUseCaseTest {
         val expectedCloudNote = note.toCloud()
         verify(remoteRepository).uploadNote(expectedCloudNote)
         verify(repository).markAsSynced(eq(note.id), any())
+    }
 
+    @Test
+    fun `deleted notes and marked them synced`() = runTest {
+
+        val deletedNote = note.copy(isDeleted = true, isSynced = false)
+        whenever(repository.getUnsyncedNotes()).thenReturn(emptyList())
+        whenever(repository.getDeletedNotes()).thenReturn(listOf(deletedNote))
+        whenever(remoteRepository.fetchAllNotes()).thenReturn(emptyList())
+
+        useCase()
+
+        val expectedCloudNote = deletedNote.toCloud()
+        verify(remoteRepository).deleteNote(expectedCloudNote)
+        verify(repository).markAsSynced(eq(deletedNote.id), any())
+    }
+
+    @Test
+    fun `pull remote notes`() = runTest {
+        val localNote = note.copy(version = 1)
+        val remoteNote = note.copy(version = 2).toCloud()
+
+        whenever(repository.getUnsyncedNotes()).thenReturn(emptyList())
+        whenever(repository.getDeletedNotes()).thenReturn(emptyList())
+        whenever(remoteRepository.fetchAllNotes()).thenReturn(listOf(remoteNote))
+        whenever(repository.getNoteById(localNote.id)).thenReturn(flowOf(localNote))
+
+        useCase()
+
+        verify(repository).upsertNote(any())
     }
 
 
