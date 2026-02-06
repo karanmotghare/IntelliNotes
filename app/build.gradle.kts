@@ -25,11 +25,11 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.intellinotes"
+    namespace = "com.karan.intellinotes"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.intellinotes"
+        applicationId = "com.karan.intellinotes"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -40,10 +40,10 @@ android {
 
     signingConfigs {
         create("release") {
-            storeFile = file(keystoreProperties["storeFile"] as String)
-            storePassword = keystoreProperties["storePassword"] as String
-            keyAlias = keystoreProperties["keyAlias"] as String
-            keyPassword = keystoreProperties["keyPassword"] as String
+            storeFile = file(keystoreProperties.getProperty("storeFile"))
+            storePassword = keystoreProperties.getProperty("storePassword")
+            keyAlias = keystoreProperties.getProperty("keyAlias")
+            keyPassword = keystoreProperties.getProperty("keyPassword")
         }
     }
 
